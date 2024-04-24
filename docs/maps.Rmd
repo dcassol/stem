@@ -1,0 +1,113 @@
+---
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# Import csv
+
+```{r, results = "hide", message=FALSE}
+library(readr)
+library(dplyr)
+library(plotly)
+library(maps)
+```
+
+```{r, results = "hide", message=FALSE}
+occupation_by_state <- read.csv("data/occupation.csv")
+head(occupation_by_state)
+filtered_data <- occupation_by_state %>%
+  filter(grepl("B24020_019|B24020_170", variable, ignore.case = TRUE))
+
+proportions <- filtered_data %>%
+  group_by(Year, NAME, sex) %>%
+  summarise(total_estimate = sum(estimate, na.rm = TRUE), .groups = 'drop') %>%
+  group_by(Year, NAME) %>%
+  mutate(proportion = total_estimate / sum(total_estimate)) %>%
+  select(Year, NAME, sex, proportion)
+
+# Get unique years for the frames
+years <- unique(proportions$Year)
+
+# Match state names to state codes for Plotly
+state_data <- map_data("state")
+proportions <- proportions %>%
+  left_join(state_data %>% distinct(region, subregion), by = c("NAME" = "region"))
+
+# Create the base plot
+plot_map <- plot_ly(
+  locationmode = 'USA-states',
+  type = 'scattergeo',
+  hoverinfo = 'text'
+) %>%
+  layout(
+    title = 'Male and Female Proportions by State Over Years',
+    geo = list(scope = 'usa', projection = list(type = 'albers usa'))
+  )
+
+# Add frames for each year
+for (year in years) {
+  year_data <- proportions %>%
+    filter(Year == year)
+
+  # Add data points for each sex
+  for (sex in unique(year_data$sex)) {
+    sex_data <- year_data %>%
+      filter(sex == sex)
+
+    plot_map <- plot_map %>%
+      add_trace(
+        data = sex_data,
+        locations = ~subregion,  # US state codes
+        z = ~proportion,
+        text = ~paste(NAME, ":", proportion*100, "%"),
+        name = sex,
+        frame = list(duration = 500, redraw = TRUE),
+        marker = list(size = ~proportion*100, color = ifelse(sex == "Male", 'blue', 'red')),
+        showlegend = TRUE
+      )
+  }
+}
+
+# Add a slider and play button
+plot_map <- plot_map %>%
+  layout(
+    sliders = list(
+      list(
+        pad = list(t = 30),
+        steps = lapply(years, function(year) {
+          list(method = "animate", args = list(list(year), list(mode = "immediate", frame = list(duration = 500, redraw = TRUE), transition = list(duration = 0))),
+               label = year)
+        })
+      )
+    ),
+    updatemenus = list(
+      list(
+        type = "buttons",
+        showactive = FALSE,
+        y = 1,
+        x = 0.1,
+        xanchor = "right",
+        yanchor = "top",
+        pad = list(t = 20, r = 10),
+        buttons = list(
+          list(
+            method = "animate",
+            args = list(NULL, list(fromcurrent = TRUE, frame = list(duration = 500, redraw = TRUE), transition = list(duration = 250))),
+            label = "Play"
+          ),
+          list(
+            method = "animate",
+            args = list(NULL, list(mode = "immediate", frame = list(duration = 0), transition = list(duration = 0))),
+            label = "Pause"
+          )
+        )
+      )
+    )
+  )
+
+# Render the plot
+plot_map
+
+
+```
