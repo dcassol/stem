@@ -1,0 +1,108 @@
+---
+title: "Occupation By State"
+author: "Luiz H. Monticelli"
+date: "Apr. 15, 2024"
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  chunk_output_type: console
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+```{r, results = "hide", message=FALSE}
+library(readr)  # For reading CSV files
+library(dplyr)  # For data manipulation
+```
+
+```{r, results = "hide", message=FALSE}
+occupation_by_state <- read.csv("data/occupation.csv")
+head(occupation_by_state)
+filtered_data <- occupation_by_state %>%
+  filter(grepl("B24020_019|B24020_170", variable, ignore.case = TRUE))
+
+proportions <- filtered_data %>%
+  group_by(Year, NAME, sex) %>%  # Assuming 'NAME' is the state name
+  summarise(total_estimate = sum(estimate, na.rm = TRUE), .groups = 'drop') %>%
+  group_by(Year, NAME) %>%
+  mutate(proportion = total_estimate / sum(total_estimate)) %>%
+  select(Year, NAME, sex, proportion)
+
+
+proportions <- proportions %>%
+  mutate(proportion = proportion * 100) 
+# Library for interactive visualization
+# Library for interactive visualization
+library(plotly)
+
+# Get unique states
+state_levels <- unique(proportions$NAME)
+
+# Prepare the buttons for the dropdown menu for state selection
+buttons <- lapply(state_levels, function(state) {
+  list(method = "update",
+       args = list(list(visible = sapply(proportions$NAME, function(x) x == state)),
+                   list(title = paste("Proportion of Male/Female in", state, "over the Years"))),
+       label = state)
+})
+
+# Create the plot with all traces initially visible but will toggle with dropdown
+plot <- plot_ly()
+
+# Loop through each state to add traces for Male and Female
+for (state in state_levels) {
+  plot <- plot %>%
+    add_trace(data = proportions[proportions$NAME == state & proportions$sex == "Male", ],
+              x = ~Year, y = ~proportion, mode = 'lines+markers',
+              name = paste("Male", state), visible = state == state_levels[1],  # Visibility set for the first state
+              line = list(color = 'blue', width = 4)) %>%
+    add_trace(data = proportions[proportions$NAME == state & proportions$sex == "Female", ],
+              x = ~Year, y = ~proportion, type = 'scatter', mode = 'lines+markers',
+              name = paste("Female", state), visible = state == state_levels[1],  # Visibility set for the first state
+              line = list(color = 'red'), marker = list(size = 7))
+}
+
+# Final layout configuration
+plot <- plot %>%
+  layout(title = "Proportion of Male/Female over the Years by State",
+         xaxis = list(title = 'Year'),
+         yaxis = list(title = 'Percentage', range = c(0, 100)),
+         hovermode = 'closest',
+         showlegend = TRUE,
+         updatemenus = list(
+           list(
+             x = 0.0,
+             xanchor = 'left',
+             y = 1.0,
+             yanchor = 'top',
+             buttons = buttons
+           )
+         ))
+```
+
+```{r}
+# Create ggplot
+p <- ggplot(proportions, aes(x = Year, y = proportion, color = sex, group = sex)) +
+  geom_line() +
+  facet_wrap(~NAME, scales = 'free_y') +  # Each state gets its own plot
+  labs(title = "Proportion of Male/Female over the Years by State",
+       y = "Percentage", x = "Year") +
+  scale_color_manual(values = c("Male" = "blue", "Female" = "red")) +
+  theme_minimal()
+p
+```
+
+
+
+```{r, message=FALSE}
+# Render the plot
+plot
+```
+
+
+
+
