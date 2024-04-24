@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y pandoc
+          sudo apt-get install -y pandoc libcurl4-openssl-dev libssl-dev
       
       - name: Install TinyTeX
         run: |
