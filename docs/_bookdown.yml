@@ -1,0 +1,9 @@
+book_filename: "Occupation by State"
+delete_merged_file: true
+language:
+  ui:
+    chapter_name: "Chapter "
+rmd_files: ["index.Rmd", 
+            "plot.Rmd"
+            ]
+clean: [pipeline.bib]

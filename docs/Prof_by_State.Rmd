@@ -1,0 +1,248 @@
+---
+title: "Earnings"
+author: "Luiz H. Monticelli"
+date: "Apr. 15, 2024"
+output: html_notebook
+editor_options: 
+  chunk_output_type: console
+---
+
+# Libraries
+
+```{r setup, include=FALSE, cache=F}
+knitr::opts_chunk$set(echo = TRUE, error = TRUE)
+```
+
+```{r}
+library(tidyverse) 
+library(dplyr) 
+library(ggplot2) 
+library(knitr) 
+library(psych)
+library(tidycensus)
+```
+
+# Variables
+
+```{r}
+v2022 <- load_variables(2022, "acs1", cache = TRUE)
+```
+
+## Row names
+
+Getting row names **for all** computer, engineering, and science occupations from v2022 to later join by name:
+
+```{r}
+names_male_oc <- v2022 %>%
+  filter(name >= "B24020_019" & name <= "B24020_034")
+
+names_male_oc[[2]] <- sub("^Estimate!!Total:!!Male:!!Management, business, science, and arts occupations:!!", "", names_male_oc[[2]])
+
+names_male_oc <- names_male_oc  %>% 
+  select(1,2) %>%
+  rename(variable = name)
+```
+
+```{r}
+names_female_oc <- v2022 %>%
+  filter(name >= "B24020_170" & name <= "B24020_185")
+
+names_female_oc[[2]] <- sub("^Estimate!!Total:!!Female:!!Management, business, science, and arts occupations:!!", "", names_female_oc[[2]])
+
+names_female_oc <- names_female_oc  %>% 
+  select(1,2) %>%
+  rename(variable = name)
+```
+
+## Values
+
+Creating a vector **male_oc** with all male computer, engineering, and science occupations:
+
+```{r}
+male_oc <- c("B24020_019", "B24020_020", "B24020_021", "B24020_022", "B24020_023", "B24020_024", "B24020_025", "B24020_026", "B24020_027", "B24020_028", "B24020_029", "B24020_030", "B24020_031", "B24020_032", "B24020_033", "B24020_034")
+```
+
+Creating a vector **female_oc** with all female computer, engineering, and science occupations:
+
+```{r}
+female_oc <- c("B24020_170", "B24020_171", "B24020_172", "B24020_173", "B24020_174", "B24020_175", "B24020_176", "B24020_177", "B24020_178", "B24020_179", "B24020_180", "B24020_181", "B24020_182", "B24020_183", "B24020_184", "B24020_185")
+```
+
+## Getting data from 2010 to 2022 (skipping 2020)
+
+```{r}
+male_oc_data <- list()
+
+for (year in 2010:2022) {
+  if (year == 2020) { #Skipping crappy 2020
+    next
+  }
+  
+  male_oc_data[[as.character(year)]] <- get_acs(
+    geography = "state",
+    survey = "acs1",
+    variables = male_oc,
+    year = year
+  )
+}
+
+combined_male_oc_data <- bind_rows(male_oc_data, .id = "Year") %>%
+  mutate(sex = "Male") %>%
+  inner_join(names_male_oc, by="variable")
+```
+
+```{r}
+female_oc_data <- list()
+
+for (year in 2010:2022) {
+  if (year == 2020) { #Skipping crappy 2020
+    next
+  }
+  
+  female_oc_data[[as.character(year)]] <- get_acs(
+    geography = "state",
+    survey = "acs1",
+    variables = female_oc,
+    year = year
+  )
+}
+
+combined_female_oc_data <- bind_rows(female_oc_data, .id = "Year") %>%
+  mutate(sex = "Female") %>%
+  inner_join(names_female_oc, by="variable")
+```
+
+### One table to rule them all
+
+```{r}
+occupation_by_state <- rbind(combined_male_oc_data, combined_female_oc_data)
+```
+
+## Prettying
+
+```{r}
+occupation_by_state <- occupation_by_state %>% 
+  select(1,3,4,7,8,5) %>%
+  rename(State = NAME, Sex = sex, Occupation = label, Estimate = estimate, Variable = variable)
+```
+
+```{r}
+## write.csv(occupation_by_state, "occupation.csv", row.names = FALSE)
+```
+
+# Master table = occupation_by_state
+
+\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_\_
+
+XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+
+## Getting down to business
+
+Are there any correlations with election results?
+
+```{r}
+filtered_data <- occupation_by_state %>%
+  filter(grepl("B24020_019|B24020_170", Variable, ignore.case = TRUE))
+```
+
+```{r}
+## write.csv(filtered_data, "filtered.csv", row.names = FALSE)
+```
+
+```{r}
+male_data <- filtered_data %>% filter(Sex == "Male")
+female_data <- filtered_data %>% filter(Sex == "Female")
+
+# Reshape each dataframe
+male_data <- male_data %>%
+  pivot_wider(names_from = Sex, values_from = Estimate) %>%
+  rename(male_value = Male)
+
+female_data <- female_data %>%
+  pivot_wider(names_from = Sex, values_from = Estimate) %>%
+  rename(female_value = Female)
+
+# Merge the reshaped dataframes
+combined_data <- left_join(male_data, female_data, by = c("Year", "State"))
+```
+
+```{r}
+combined_data <- combined_data %>% 
+  select(1,2,4,5,8)
+```
+
+```{r}
+combined_data <- combined_data %>%
+  mutate(
+    total_value = male_value + female_value,
+    percent_male_value = round((male_value / total_value) * 100, 2),
+    percent_female_value = round((female_value / total_value) * 100, 2)
+  )
+```
+
+```{r}
+combined_data <- combined_data %>% 
+  select(1,2,3,7,8) %>%
+  rename(Occupation = Occupation.x, Pct_Male = percent_male_value, Pct_Female = percent_female_value)
+```
+
+Descriptives
+
+```{r}
+describe(combined_data)
+```
+
+-\> Mean and Median are almost the same.
+
+# 2022 - Current landscape
+
+The states with the highest employment gap between male and female population are:
+
+```{r}
+an_2022 <- combined_data %>% 
+  filter(Year == 2022) %>% 
+  filter(State != "Puerto Rico")
+```
+
+Does it correlate with the last Presidential Election result?
+
+```{r}
+library(readr)
+elections2020 <- read_csv("elections2020.csv")
+```
+
+```{r}
+an_2022 <- left_join(an_2022, elections2020, by = "State")
+```
+
+### Histograms
+
+```{r}
+hist(an_2022$Pct_Male)
+hist(an_2022$Pct_Female)
+hist(an_2022$Biden)
+hist(an_2022$Trump)
+```
+
+### Plot
+
+```{r}
+plot(an_2022$Trump, an_2022$Pct_Male)
+```
+
+### Correlation
+
+```{r}
+cor <- round(cor(an_2022[4:7], use="pairwise.complete.obs"),2)
+View(cor)
+```
+
+## Regression
+
+```{r}
+options(scipen = 999)
+mod1 <- lm(Trump ~ Pct_Male, data=an_2022)
+summary(mod1)
+```
+
+## -\> We found a strong correlation (0.68) between percentage of votes to Trump and the occupation gap between male and female in STEM fields. The Adjusted R-squared (0.449) means that 44.9% of the inequality can be explained by political stance. We know the R-squared is statistically significant because of the p-value that's well below 0.05. For every percent in support to the Republican candidate we expect we expect the likelihood of inequality to go up by 2.55%.

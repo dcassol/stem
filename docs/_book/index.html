@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Welcome | Untitled</title>
+<meta name="author" content="Daniela Cassol">
+<meta name="description" content="This is a RNA-seq template workflow.">
+<meta name="generator" content="bookdown 0.34 with bs4_book()">
+<meta property="og:title" content="Welcome | Untitled">
+<meta property="og:type" content="book">
+<meta property="og:description" content="This is a RNA-seq template workflow.">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Welcome | Untitled">
+<meta name="twitter:description" content="This is a RNA-seq template workflow.">
+<!-- JS --><script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.6/clipboard.min.js" integrity="sha256-inc5kl9MA1hkeYUt+EC3BhlIgyp/2jDIyBLS6k3UxPI=" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/6.4.6/fuse.js" integrity="sha512-zv6Ywkjyktsohkbp9bb45V6tEMoWhzFzXis+LrMehmJZZSys19Yxf1dopHx7WzIKxr5tK2dVcYmaCk2uqdjF4A==" crossorigin="anonymous"></script><script src="https://kit.fontawesome.com/6ecbd6c532.js" crossorigin="anonymous"></script><script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<link href="libs/bootstrap-4.6.0/bootstrap.min.css" rel="stylesheet">
+<script src="libs/bootstrap-4.6.0/bootstrap.bundle.min.js"></script><script src="libs/bs3compat-0.5.0/transition.js"></script><script src="libs/bs3compat-0.5.0/tabs.js"></script><script src="libs/bs3compat-0.5.0/bs3compat.js"></script><link href="libs/bs4_book-1.0.0/bs4_book.css" rel="stylesheet">
+<script src="libs/bs4_book-1.0.0/bs4_book.js"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/autocomplete.js/0.38.0/autocomplete.jquery.min.js" integrity="sha512-GU9ayf+66Xx2TmpxqJpliWbT5PiGYxpaG8rfnBEk1LL8l1KGkRShhngwdXK1UgqhAzWpZHSiYPc09/NwDQIGyg==" crossorigin="anonymous"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/mark.min.js" integrity="sha512-5CYOlHXGh6QpOFA/TeTylKLWfB3ftPsde7AnmhuitiTX4K5SqCLBeKro6sPS8ilsz1Q4NRx3v8Ko2IBiszzdww==" crossorigin="anonymous"></script><!-- CSS --><style type="text/css">
+    
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  </style>
+<style type="text/css">
+    /* Used with Pandoc 2.11+ new --citeproc when CSL is used */
+    div.csl-bib-body { }
+    div.csl-entry {
+      clear: both;
+        }
+    .hanging div.csl-entry {
+      margin-left:2em;
+      text-indent:-2em;
+    }
+    div.csl-left-margin {
+      min-width:2em;
+      float:left;
+    }
+    div.csl-right-inline {
+      margin-left:2em;
+      padding-left:1em;
+    }
+    div.csl-indent {
+      margin-left: 2em;
+    }
+  </style>
+</head>
+<body data-spy="scroll" data-target="#toc">
+
+<div class="container-fluid">
+<div class="row">
+  <header class="col-sm-12 col-lg-3 sidebar sidebar-book"><a class="sr-only sr-only-focusable" href="#content">Skip to main content</a>
+
+    <div class="d-flex align-items-start justify-content-between">
+      <h1>
+        <a href="index.html" title="">Untitled</a>
+      </h1>
+      <button class="btn btn-outline-primary d-lg-none ml-2 mt-1" type="button" data-toggle="collapse" data-target="#main-nav" aria-expanded="true" aria-controls="main-nav"><i class="fas fa-bars"></i><span class="sr-only">Show table of contents</span></button>
+    </div>
+
+    <div id="main-nav" class="collapse-lg">
+      <form role="search">
+        <input id="search" class="form-control" type="search" placeholder="Search" aria-label="Search">
+</form>
+
+      <nav aria-label="Table of contents"><h2>Table of contents</h2>
+        <ul class="book-toc list-unstyled"><li><a class="active" href="index.html">Welcome</a></li></ul>
+
+        <div class="book-extra">
+          <p><a id="book-repo" href="https://github.com/dcassol/wdl_rnaseq">View book source <i class="fab fa-github"></i></a></p>
+        </div>
+      </nav>
+</div>
+  </header><main class="col-sm-12 col-md-9 col-lg-7" id="content"><!--bookdown:title:end--><!--bookdown:title:start--><div id="welcome" class="section level1 unnumbered">
+<h1>Welcome<a class="anchor" aria-label="anchor" href="#welcome"><i class="fas fa-link"></i></a>
+</h1>
+<div id="about" class="section level2 unnumbered">
+<h2>About<a class="anchor" aria-label="anchor" href="#about"><i class="fas fa-link"></i></a>
+</h2>
+<div class="inline-figure"><img src="https://user-images.githubusercontent.com/22381693/69014860-a7299300-09e2-11ea-9d1a-1840d0d609d7.png" height="200px" style="display: block; margin: auto;"></div>
+<p>This repository containers RNA-seq pipeline, docker container and sample data for testing.
+Pipelines are written in <a href="https://github.com/openwdl/wdl">WDL language</a> and <a href="https://cromwell.readthedocs.io/en/stable/">Cromwell</a> workflow execution engine is used to run them.</p>
+</div>
+<div id="is-this-workflow-useful-for-you" class="section level2 unnumbered">
+<h2>Is this workflow useful for you?<a class="anchor" aria-label="anchor" href="#is-this-workflow-useful-for-you"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Expected output</strong></p>
+<ul>
+<li>
+<code>Fastqc</code> Quality Report</li>
+<li>Reads Trimming with <code>Trimmomatic</code>
+</li>
+<li>Align Reads to Reference Genome using <code>HISAT2</code> (BAM files)</li>
+<li>Expression quantification using <code>summarizeOverlaps (GenomicFeatures)</code> <span class="citation">(<a href="#ref-Lawrence2013-kt">Lawrence et al. 2013</a>)</span>
+</li>
+<li>Differential Expression Matrix using <code>DESeq2</code>
+</li>
+<li>Create Feature set and Filtered Differential Expression Matrix</li>
+</ul>
+</div>
+<div id="quick-start---no-installation-required" class="section level2 unnumbered">
+<h2>Quick Start - No Installation required<a class="anchor" aria-label="anchor" href="#quick-start---no-installation-required"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="ex">docker</span> run  <span class="at">-dP</span> dcassol/wdl_rnaseq</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">docker</span> ps </span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="ex">docker</span> exec <span class="at">-it</span> <span class="op">&lt;</span>IMAGE NAME<span class="op">&gt;</span> /bin/bash</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="ex">cromwell</span> run rnaseq.wdl <span class="at">-i</span> rnaseq.json <span class="at">-o</span> rnaseq.options.json </span></code></pre></div>
+<p>Now, you can test and edit the pipeline for your data. For more details, please
+check the <code>Sample Data</code> section. Have fun!</p>
+</div>
+<div id="quick-start" class="section level2 unnumbered">
+<h2>Quick Start<a class="anchor" aria-label="anchor" href="#quick-start"><i class="fas fa-link"></i></a>
+</h2>
+<p><strong>Step 1</strong>: Clone the git repository to a directory on your computer:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="ex">https://github.com/dcassol/wdl_rnaseq.git</span></span></code></pre></div>
+<p>Note: Ensure you have the correct permissions to run the pipeline - here we are using <code>Docker</code>.
+A further section will be provided containing more details if you are running in an HPC environment.</p>
+<p><strong>Step 2</strong>: To run the pipeline use the command below:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="ex">cromwell</span> run rnaseq.wdl <span class="at">-i</span> rnaseq.json <span class="at">-o</span> rnaseq.options.json </span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">## OR</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="ex">java</span> <span class="at">-jar</span> cromwell-72.jar run rnaseq.wdl <span class="at">-i</span> rnaseq.json <span class="at">-o</span> rnaseq.options.json</span></code></pre></div>
+<p>Please, make sure use the correct PATH to <code>cromwell-72.jar</code> file.</p>
+
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://readr.tidyverse.org">readr</a></span><span class="op">)</span>  <span class="co"># For reading CSV files</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org">dplyr</a></span><span class="op">)</span>  <span class="co"># For data manipulation</span></span></code></pre></div>
+</div>
+<div id="import-csv" class="section level2" number="0.1">
+<h2>
+<span class="header-section-number">0.1</span> Import csv<a class="anchor" aria-label="anchor" href="#import-csv"><i class="fas fa-link"></i></a>
+</h2>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">occupation_by_state</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.csv</a></span><span class="op">(</span><span class="st">"data/occupation.csv"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html">head</a></span><span class="op">(</span><span class="va">occupation_by_state</span><span class="op">)</span></span>
+<span><span class="va">filtered_data</span> <span class="op">&lt;-</span> <span class="va">occupation_by_state</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html">filter</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html">grepl</a></span><span class="op">(</span><span class="st">"B24020_019|B24020_170"</span>, <span class="va">variable</span>, ignore.case <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">proportions</span> <span class="op">&lt;-</span> <span class="va">filtered_data</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">NAME</span>, <span class="va">sex</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span>  <span class="co"># Assuming 'NAME' is the state name</span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html">summarise</a></span><span class="op">(</span>total_estimate <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">estimate</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, .groups <span class="op">=</span> <span class="st">'drop'</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html">group_by</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">NAME</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="va">total_estimate</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/sum.html">sum</a></span><span class="op">(</span><span class="va">total_estimate</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html">select</a></span><span class="op">(</span><span class="va">Year</span>, <span class="va">NAME</span>, <span class="va">sex</span>, <span class="va">proportion</span><span class="op">)</span></span>
+<span></span>
+<span></span>
+<span><span class="va">proportions</span> <span class="op">&lt;-</span> <span class="va">proportions</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html">mutate</a></span><span class="op">(</span>proportion <span class="op">=</span> <span class="va">proportion</span> <span class="op">*</span> <span class="fl">100</span><span class="op">)</span> </span>
+<span><span class="co"># Library for interactive visualization</span></span>
+<span><span class="co"># Library for interactive visualization</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://plotly-r.com">plotly</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get unique states</span></span>
+<span><span class="va">state_levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html">unique</a></span><span class="op">(</span><span class="va">proportions</span><span class="op">$</span><span class="va">NAME</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Prepare the buttons for the dropdown menu for state selection</span></span>
+<span><span class="va">buttons</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">lapply</a></span><span class="op">(</span><span class="va">state_levels</span>, <span class="kw">function</span><span class="op">(</span><span class="va">state</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>method <span class="op">=</span> <span class="st">"update"</span>,</span>
+<span>       args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>visible <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html">sapply</a></span><span class="op">(</span><span class="va">proportions</span><span class="op">$</span><span class="va">NAME</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span> <span class="op">==</span> <span class="va">state</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>                   <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Proportion of Male/Female in"</span>, <span class="va">state</span>, <span class="st">"over the Years"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>       label <span class="op">=</span> <span class="va">state</span><span class="op">)</span></span>
+<span><span class="op">}</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create the plot with all traces initially visible but will toggle with dropdown</span></span>
+<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/plotly/man/plot_ly.html">plot_ly</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Loop through each state to add traces for Male and Female</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">state</span> <span class="kw">in</span> <span class="va">state_levels</span><span class="op">)</span> <span class="op">{</span></span>
+<span>  <span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">plot</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/plotly/man/add_trace.html">add_trace</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">proportions</span><span class="op">[</span><span class="va">proportions</span><span class="op">$</span><span class="va">NAME</span> <span class="op">==</span> <span class="va">state</span> <span class="op">&amp;</span> <span class="va">proportions</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"Male"</span>, <span class="op">]</span>,</span>
+<span>              x <span class="op">=</span> <span class="op">~</span><span class="va">Year</span>, y <span class="op">=</span> <span class="op">~</span><span class="va">proportion</span>, mode <span class="op">=</span> <span class="st">'lines+markers'</span>,</span>
+<span>              name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Male"</span>, <span class="va">state</span><span class="op">)</span>, visible <span class="op">=</span> <span class="va">state</span> <span class="op">==</span> <span class="va">state_levels</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Visibility set for the first state</span></span>
+<span>              line <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">'blue'</span>, width <span class="op">=</span> <span class="fl">4</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>    <span class="fu"><a href="https://rdrr.io/pkg/plotly/man/add_trace.html">add_trace</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">proportions</span><span class="op">[</span><span class="va">proportions</span><span class="op">$</span><span class="va">NAME</span> <span class="op">==</span> <span class="va">state</span> <span class="op">&amp;</span> <span class="va">proportions</span><span class="op">$</span><span class="va">sex</span> <span class="op">==</span> <span class="st">"Female"</span>, <span class="op">]</span>,</span>
+<span>              x <span class="op">=</span> <span class="op">~</span><span class="va">Year</span>, y <span class="op">=</span> <span class="op">~</span><span class="va">proportion</span>, type <span class="op">=</span> <span class="st">'scatter'</span>, mode <span class="op">=</span> <span class="st">'lines+markers'</span>,</span>
+<span>              name <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html">paste</a></span><span class="op">(</span><span class="st">"Female"</span>, <span class="va">state</span><span class="op">)</span>, visible <span class="op">=</span> <span class="va">state</span> <span class="op">==</span> <span class="va">state_levels</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,  <span class="co"># Visibility set for the first state</span></span>
+<span>              line <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span>, marker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">7</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Final layout configuration</span></span>
+<span><span class="va">plot</span> <span class="op">&lt;-</span> <span class="va">plot</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html">%&gt;%</a></span></span>
+<span>  <span class="fu">layout</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Proportion of Male/Female over the Years by State"</span>,</span>
+<span>         xaxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Year'</span><span class="op">)</span>,</span>
+<span>         yaxis <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">'Percentage'</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">100</span><span class="op">)</span><span class="op">)</span>,</span>
+<span>         hovermode <span class="op">=</span> <span class="st">'closest'</span>,</span>
+<span>         showlegend <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>         updatemenus <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>           <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span></span>
+<span>             x <span class="op">=</span> <span class="fl">0.0</span>,</span>
+<span>             xanchor <span class="op">=</span> <span class="st">'left'</span>,</span>
+<span>             y <span class="op">=</span> <span class="fl">1.0</span>,</span>
+<span>             yanchor <span class="op">=</span> <span class="st">'top'</span>,</span>
+<span>             buttons <span class="op">=</span> <span class="va">buttons</span></span>
+<span>           <span class="op">)</span></span>
+<span>         <span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Render the plot</span></span>
+<span><span class="va">plot</span></span></code></pre></div>
+
+<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="ref-Lawrence2013-kt" class="csl-entry">
+Lawrence, Michael, Wolfgang Huber, Hervé Pagès, Patrick Aboyoun, Marc Carlson, Robert Gentleman, Martin T Morgan, and Vincent J Carey. 2013. <span>“Software for Computing and Annotating Genomic Ranges.”</span> <em>PLoS Comput. Biol.</em> 9 (8): e1003118. <a href="https://doi.org/10.1371/journal.pcbi.1003118">https://doi.org/10.1371/journal.pcbi.1003118</a>.
+</div>
+</div>
+</div>
+</div>
+  <div class="chapter-nav">
+<div class="empty"></div>
+<div class="empty"></div>
+</div></main><div class="col-md-3 col-lg-2 d-none d-md-block sidebar sidebar-chapter">
+    <nav id="toc" data-toggle="toc" aria-label="On this page"><h2>On this page</h2>
+      <ul class="nav navbar-nav">
+<li><a class="nav-link" href="#welcome">Welcome</a></li>
+<li><a class="nav-link" href="#about">About</a></li>
+<li><a class="nav-link" href="#is-this-workflow-useful-for-you">Is this workflow useful for you?</a></li>
+<li><a class="nav-link" href="#quick-start---no-installation-required">Quick Start - No Installation required</a></li>
+<li><a class="nav-link" href="#quick-start">Quick Start</a></li>
+<li><a class="nav-link" href="#import-csv"><span class="header-section-number">0.1</span> Import csv</a></li>
+</ul>
+
+      <div class="book-extra">
+        <ul class="list-unstyled">
+<li><a id="book-source" href="https://github.com/dcassol/wdl_rnaseq/blob/main/docs/index.Rmd">View source <i class="fab fa-github"></i></a></li>
+          <li><a id="book-edit" href="https://github.com/dcassol/wdl_rnaseq/edit/main/docs/index.Rmd">Edit this page <i class="fab fa-github"></i></a></li>
+        </ul>
+</div>
+    </nav>
+</div>
+
+</div>
+</div> <!-- .container -->
+
+<footer class="bg-primary text-light mt-5"><div class="container"><div class="row">
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>"<strong>Untitled</strong>" was written by Daniela Cassol. It was last built on 2024-04-23.</p>
+  </div>
+
+  <div class="col-12 col-md-6 mt-3">
+    <p>This book was built by the <a class="text-light" href="https://bookdown.org">bookdown</a> R package.</p>
+  </div>
+
+</div></div>
+</footer>
+</body>
+</html>
