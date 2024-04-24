@@ -8,13 +8,13 @@ editor_options:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+# Import csv
+
 ```{r, results = "hide", message=FALSE}
 library(readr)  # For reading CSV files
 library(dplyr)  # For data manipulation
 ```
-
-
-# Import csv
 
 ```{r, results = "hide", message=FALSE}
 occupation_by_state <- read.csv("data/occupation.csv")
