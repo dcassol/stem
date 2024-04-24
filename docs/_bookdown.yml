@@ -4,6 +4,9 @@ language:
   ui:
     chapter_name: "Chapter "
 rmd_files: ["index.Rmd", 
-            "plot.Rmd"
+            "plot.Rmd", 
+            "resources.Rmd",
+            "internalSettings.Rmd",
+            "references.Rmd"
             ]
 clean: [pipeline.bib]

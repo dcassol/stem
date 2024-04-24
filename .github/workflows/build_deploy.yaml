@@ -28,7 +28,7 @@ jobs:
       
       - name: Install TinyTeX
         run: |
-          install.packages('tinytex')
+          install.packages(c('tinytex', 'plotly'))
           tinytex::install_tinytex()
         shell: Rscript {0}
 

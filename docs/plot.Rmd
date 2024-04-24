@@ -1,7 +1,5 @@
 ---
-title: "Untitled"
 output: html_document
-date: "2024-04-23"
 editor_options: 
   chunk_output_type: console
 ---
@@ -16,7 +14,7 @@ library(dplyr)  # For data manipulation
 ```
 
 
-## Import csv
+# Import csv
 
 ```{r, results = "hide", message=FALSE}
 occupation_by_state <- read.csv("data/occupation.csv")
@@ -81,6 +79,9 @@ plot <- plot %>%
              buttons = buttons
            )
          ))
+```
+
+```{r}
 
 # Render the plot
 plot
