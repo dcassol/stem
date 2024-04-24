@@ -14,9 +14,21 @@ library(maps)
 ```
 
 ```{r, results = "hide", message=FALSE}
-occupation_by_state <- read.csv("data/occupation.csv")
-head(occupation_by_state)
-filtered_data <- occupation_by_state %>%
+library(maps)
+library(dplyr)
+library(stringr)
+
+# Map state names to state abbreviations
+state_map_data <- map_data("state")
+state_map_data$region <- str_to_title(state_map_data$region)
+state_data <- unique(state_map_data[, c("region")])
+state_data <- as.data.frame(state_data)  # Ensure it's a dataframe
+state_data$abbr <- state.abb[match(state_data$state_data, state.name)]
+colnames(state_data) <- c("region", "abbr")
+
+# Load your data
+occupation_data <- read_csv("data/occupation.csv")
+filtered_data <- occupation_data %>%
   filter(grepl("B24020_019|B24020_170", variable, ignore.case = TRUE))
 
 proportions <- filtered_data %>%
@@ -24,17 +36,15 @@ proportions <- filtered_data %>%
   summarise(total_estimate = sum(estimate, na.rm = TRUE), .groups = 'drop') %>%
   group_by(Year, NAME) %>%
   mutate(proportion = total_estimate / sum(total_estimate)) %>%
+  ungroup() %>%
   select(Year, NAME, sex, proportion)
 
-# Get unique years for the frames
-years <- unique(proportions$Year)
+# Ensure both dataframes are compatible for joining
+proportions <- left_join(proportions, state_data, by = c("NAME" = "region"))
 
-# Match state names to state codes for Plotly
-state_data <- map_data("state")
-proportions <- proportions %>%
-  left_join(state_data %>% distinct(region, subregion), by = c("NAME" = "region"))
+proportions <- na.omit(proportions)
 
-# Create the base plot
+# Prepare the base plot with geographical context
 plot_map <- plot_ly(
   locationmode = 'USA-states',
   type = 'scattergeo',
@@ -45,62 +55,38 @@ plot_map <- plot_ly(
     geo = list(scope = 'usa', projection = list(type = 'albers usa'))
   )
 
-# Add frames for each year
+# Generate frames for each year
+years <- unique(proportions$Year)
 for (year in years) {
   year_data <- proportions %>%
     filter(Year == year)
-
-  # Add data points for each sex
+  
   for (sex in unique(year_data$sex)) {
-    sex_data <- year_data %>%
-      filter(sex == sex)
-
     plot_map <- plot_map %>%
       add_trace(
-        data = sex_data,
-        locations = ~subregion,  # US state codes
-        z = ~proportion,
-        text = ~paste(NAME, ":", proportion*100, "%"),
+        data = year_data %>% filter(sex == sex),
+        locations = ~abbr,  # Use state abbreviations
+        z = ~proportion * 100,  # Convert proportion to percentage
+        text = ~paste(NAME, sex, ": ", round(proportion * 100, 2), "%"),
         name = sex,
-        frame = list(duration = 500, redraw = TRUE),
-        marker = list(size = ~proportion*100, color = ifelse(sex == "Male", 'blue', 'red')),
-        showlegend = TRUE
+        frame = list(group = year, duration = 500, redraw = TRUE),
+        marker = list(size = ~proportion * 100, color = ifelse(sex == "Male", 'blue', 'red'), line = list(color = "black", width = 1)),
+        type = 'scattergeo',
+        mode = 'markers+text'
       )
   }
 }
 
-# Add a slider and play button
+# Add play and pause buttons
 plot_map <- plot_map %>%
   layout(
-    sliders = list(
-      list(
-        pad = list(t = 30),
-        steps = lapply(years, function(year) {
-          list(method = "animate", args = list(list(year), list(mode = "immediate", frame = list(duration = 500, redraw = TRUE), transition = list(duration = 0))),
-               label = year)
-        })
-      )
-    ),
     updatemenus = list(
       list(
         type = "buttons",
-        showactive = FALSE,
-        y = 1,
-        x = 0.1,
-        xanchor = "right",
-        yanchor = "top",
-        pad = list(t = 20, r = 10),
+        #showactive = false,
         buttons = list(
-          list(
-            method = "animate",
-            args = list(NULL, list(fromcurrent = TRUE, frame = list(duration = 500, redraw = TRUE), transition = list(duration = 250))),
-            label = "Play"
-          ),
-          list(
-            method = "animate",
-            args = list(NULL, list(mode = "immediate", frame = list(duration = 0), transition = list(duration = 0))),
-            label = "Pause"
-          )
+          list(label = "Play", method = "animate", args = list(NULL, list(frame = list(duration = 500, redraw = TRUE), fromcurrent = TRUE, transition = list(duration = 250)))),
+          list(label = "Pause", method = "animate", args = list(NULL, list(frame = list(duration = 0, redraw = TRUE), transition = list(duration = 0))))
         )
       )
     )
@@ -108,6 +94,7 @@ plot_map <- plot_map %>%
 
 # Render the plot
 plot_map
+
 
 
 ```
