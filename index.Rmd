@@ -17,6 +17,8 @@ knitr::opts_chunk$set(echo = FALSE)
 ```{r, results = "hide", message=FALSE}
 library(readr)  # For reading CSV files
 library(dplyr)  # For data manipulation
+library(ggplot2)
+library(plotly)
 ```
 
 ```{r, results = "hide", message=FALSE}
@@ -32,13 +34,30 @@ proportions <- filtered_data %>%
   mutate(proportion = total_estimate / sum(total_estimate)) %>%
   select(Year, NAME, sex, proportion)
 
-
 proportions <- proportions %>%
   mutate(proportion = proportion * 100) 
-# Library for interactive visualization
-# Library for interactive visualization
-library(plotly)
+```
 
+
+```{r, results = "hide", message=FALSE}
+# Create ggplot
+p <-  ggplot(proportions, aes(x = Year, y = proportion, color = sex, group = sex)) +
+  geom_line() +
+  facet_wrap(~NAME, scales = 'free_y') +  # Each state gets its own plot
+  labs(title = "Proportion of Male/Female over the Years by State",
+       y = "Percentage", x = "Year") +
+  scale_color_manual(values = c("Male" = "blue", "Female" = "red")) +
+  scale_y_continuous(limits = c(0, 100), breaks = seq(0, 100, 20)) +  # Control Y axis limits and breaks
+  theme_minimal() +
+  theme(axis.title.x = element_blank())
+```
+
+```{r, message=FALSE}
+# Render the plot
+p
+```
+
+```{r}
 # Get unique states
 state_levels <- unique(proportions$NAME)
 
@@ -59,11 +78,11 @@ for (state in state_levels) {
     add_trace(data = proportions[proportions$NAME == state & proportions$sex == "Male", ],
               x = ~Year, y = ~proportion, mode = 'lines+markers',
               name = paste("Male", state), visible = state == state_levels[1],  # Visibility set for the first state
-              line = list(color = 'blue', width = 4)) %>%
+              line = list(color = 'blue'), marker = list(size = 4)) %>%
     add_trace(data = proportions[proportions$NAME == state & proportions$sex == "Female", ],
               x = ~Year, y = ~proportion, type = 'scatter', mode = 'lines+markers',
               name = paste("Female", state), visible = state == state_levels[1],  # Visibility set for the first state
-              line = list(color = 'red'), marker = list(size = 7))
+              line = list(color = 'red'), marker = list(size = 4))
 }
 
 # Final layout configuration
@@ -83,19 +102,6 @@ plot <- plot %>%
            )
          ))
 ```
-
-```{r}
-# Create ggplot
-p <- ggplot(proportions, aes(x = Year, y = proportion, color = sex, group = sex)) +
-  geom_line() +
-  facet_wrap(~NAME, scales = 'free_y') +  # Each state gets its own plot
-  labs(title = "Proportion of Male/Female over the Years by State",
-       y = "Percentage", x = "Year") +
-  scale_color_manual(values = c("Male" = "blue", "Female" = "red")) +
-  theme_minimal()
-p
-```
-
 
 
 ```{r, message=FALSE}
