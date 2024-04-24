@@ -81,7 +81,7 @@ plot <- plot %>%
          ))
 ```
 
-```{r}
+```{r, message=FALSE}
 
 # Render the plot
 plot
